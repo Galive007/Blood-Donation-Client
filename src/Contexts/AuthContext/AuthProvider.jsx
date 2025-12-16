@@ -1,0 +1,95 @@
+import React, { useEffect, useState } from 'react';
+import { AuthContext } from './AuthContext';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
+import { auth } from '../../Firebase/firebase.config';
+import axios from 'axios';
+
+
+
+const googleProvider = new GoogleAuthProvider()
+
+const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [role, setRole] = useState('')
+
+    const registerUser = (email, password) => {
+        setLoading(true)
+        return createUserWithEmailAndPassword(auth, email, password)
+    }
+
+    const signinUser = (email, password) => {
+        setLoading(true)
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+
+    const googleSignIn = () => {
+        setLoading(true)
+        return signInWithPopup(auth, googleProvider)
+    }
+
+    const updateUserProfile = (profile) => {
+        setLoading(true)
+        return updateProfile(auth.currentUser, profile)
+    }
+
+    const forgetPassword = (email) => {
+        setLoading(true)
+        return sendPasswordResetEmail(auth, email)
+    }
+
+    const logOut = () => {
+        setLoading(true)
+        return signOut(auth)
+    }
+ 
+
+    // observe User State
+    useEffect(() => {
+        const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser)
+            setLoading(false)
+        })
+
+        return () => {
+            unSubscribe();
+        }
+    }, [])
+
+
+    // role
+    useEffect(() => {
+        if(!user) return;
+        axios.get(`http://localhost:5000/users/role/${user.email}`)
+            .then(res => {
+                // console.log(res.data.role);
+                setRole(res.data.role)
+                
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }, [user])
+
+    // console.log(role);
+    
+
+    const authInfo = {
+        user,
+        role,
+        loading,
+        registerUser,
+        signinUser,
+        googleSignIn,
+        updateUserProfile,
+        forgetPassword,
+        logOut
+    }
+    return (
+        <AuthContext value={authInfo}>
+            {children}
+        </AuthContext>
+    );
+};
+
+export default AuthProvider;
