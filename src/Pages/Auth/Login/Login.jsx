@@ -41,7 +41,7 @@ const Login = () => {
         <div className=' min-h-screen flex items-center'>
             <div className='w-1/2 lg:w-1/3 mx-auto'>
                 <h1 className='text-2xl md:text-3xl lg:text-4xl font-extrabold'>Welcome Back</h1>
-                <p>Login with ZapShift</p>
+                <p>Login with Blood Donate</p>
                 <div>
                     <form onSubmit={handleSubmit(handleLogin)}>
 
@@ -59,7 +59,7 @@ const Login = () => {
                             {errors.password?.type === 'minLength' && <p className='text-red-600'>Password must be at least 6 characters.</p>}
                             {errors.password?.type === 'pattern' && <p className='text-red-600'>Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.</p>}
                             <div><a className="link link-hover" onClick={handleForget}>Forgot password?</a></div>
-                            <p>New To Zap Shift.Please.....<Link className='underline hover:text-blue-600' to='/register' state={location.state}>Registration</Link></p>
+                            <p>New To Blood Donate.Please.....<Link className='underline hover:text-blue-600' to='/register' state={location.state}>Registration</Link></p>
                             <button className="btn mt-4 text-primary btn-secondary hover:bg-red-700 hover:text-white">Login</button>
                         </fieldset>
                     </form>

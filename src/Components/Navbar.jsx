@@ -85,14 +85,17 @@ const Navbar = () => {
                             </div>
                         ) : (
                             <div className="relative">
+                                
                                 <div className='flex items-center gap-2'>
-                                    <h1 className='font-semibold text-secondary text-xl'>{user?.displayName}</h1>
+                                    <Link to='/dashboard' className="btn">Dashboard</Link>
+                                    
                                     <button onClick={() => setOpen(o => !o)} className="w-10 h-10 rounded-full overflow-hidden border-2 border-secondary">
                                         <img src={user.photoURL || 'https://source.unsplash.com/120x120/?face'} alt="user" className="w-full h-full object-cover" />
                                     </button>
                                 </div>
                                 {open && (
-                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md p-2 z-10 text-primary flex flex-col shadow-2xl">
+                                    <div className="absolute right-0 mt-2 w-48 rounded-md p-2 z-10 text-primary flex flex-col shadow-2xl">
+                                        <h1 className='font-semibold text-white text-xl text-center'>{user?.displayName}</h1>
                                         {/* <Link to="/add-review" className="block px-3 py-2 text-sm text-secondary  hover:bg-primary rounded">Add Review</Link> */}
                                         <MyLink to='/add-review' className='py-2 px-3'>
                                             Add Review

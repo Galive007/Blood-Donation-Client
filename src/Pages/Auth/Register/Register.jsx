@@ -130,7 +130,7 @@ const Register = () => {
             <div className='w-1/2 lg:w-1/3 mx-auto pr-3 md:pr-0'>
                 <h1 className='text-2xl 
          font-extrabold'>Create an Account</h1>
-                <p>Register with ZapShift</p>
+                <p>Register with Blood Donate</p>
                 <form onSubmit={handleSubmit(handleRegistration)}>
                     {/* <h1 className='text-center font-bold text-2xl'>Registration</h1> */}
                     <fieldset className="fieldset">
@@ -249,7 +249,7 @@ const Register = () => {
                             </p>
                         )}
 
-                        <p>Already Have An Account.Please...... <Link className='underline hover:text-blue-600' to='/login' state={location.state}>Login</Link></p>
+                        <p className='mt-3'>Already Have An Account.Please...... <Link className='underline hover:text-blue-600' to='/login' state={location.state}>Login</Link></p>
                         <button disabled={!password || password !== confirmPassword}
                             className={`btn mt-4 ${password === confirmPassword
                                 ? 'btn-primary hover:bg-red-700 hover:text-white'
