@@ -5,6 +5,7 @@ import Login from "../Pages/Auth/Login/Login";
 import Register from "../Pages/Auth/Register/Register";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 import MainDashboard from "../Pages/Dashboard/MainDashboard/MainDashboard";
+import AddRequest from "../Pages/Dashboard/AddRequest/AddRequest";
 
 
 
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <MainDashboard></MainDashboard>
+      },
+      {
+        path:'add-request',
+        element: <AddRequest></AddRequest>
       }
     ]
   }

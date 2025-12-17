@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Link, useLocation, useNavigate } from 'react-router';
@@ -9,9 +9,31 @@ import Swal from 'sweetalert2';
 
 const Register = () => {
     const location = useLocation()
-    // console.log('register', location);
-
     const navigate = useNavigate()
+
+    const [upazilas,setUpazilas]=useState([])
+    const [districts,setDistricts]=useState([])
+
+
+    useEffect(()=>{
+        axios.get('/upazilas.json')
+        .then(res=>{
+            // console.log(res.data.name);
+            setUpazilas(res.data.upazilas)
+        })
+
+        axios.get('/districts.json')
+        .then(res=>{
+            // console.log(res.data.name);
+            setDistricts(res.data.districts)
+        })
+    },[])
+
+
+
+    // console.log(upazilas,districts);
+    
+
 
     const {
         register,
@@ -22,7 +44,7 @@ const Register = () => {
 
     const password = watch('password');
     const confirmPassword = watch('confirmPassword');
-    // console.log(confirmPassword);
+
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -42,27 +64,19 @@ const Register = () => {
         return 'Medium';
     };
 
-    const handleRegistration = (data) => {
+    const handleRegistration = async(data) => {
         if (data.password !== data.confirmPassword) {
+            Swal.fire('Error', 'Passwords do not match', 'error');
             return;
         }
         const { confirmPassword, ...restData } = data;
-        // console.log('data', data);
         console.log(confirmPassword);
 
-
         const profileImage = restData.photo[0];
-        const { email, password, name,role } = restData;
-        // const profileImage = data.photo[0]
-        // console.log(profileImage);
-        // const email = data.email
-        // const password = data.password
-        // const name = data.name
-        // console.log(role);
+        const { email, password, name, blood,district,upazila } = restData;
         
-
-
-        registerUser(email, password)
+        // console.log(district);
+        await registerUser(email, password)
             .then(() => {
                 // console.log(result.user);
                 //1. store the image in form data
@@ -93,7 +107,7 @@ const Register = () => {
                         updateUserProfile(userProfile)
                             .then(() => {
                                 const userData = {
-                                    email, password, name, mainPhotoUrl,role
+                                    email, password, name, mainPhotoUrl, blood,district,upazila
                                 }
                                 axios.post('http://localhost:5000/users', userData)
                                     .then(res => {
@@ -104,19 +118,14 @@ const Register = () => {
                                                 text: "Registration Successful",
                                                 icon: "success"
                                             });
-                                            navigate(location?.state || '/')
+                                            navigate(location.state?.from || '/');
                                         }
                                     })
-                                    .catch(error => {
-                                        console.log(error);
-                                    })
+                                    
                                 // console.log('user profile updated done',res); 
 
                             })
 
-                            .catch(error => {
-                                console.log(error);
-                            })
                     })
 
             })
@@ -131,8 +140,8 @@ const Register = () => {
                 <h1 className='text-2xl 
          font-extrabold'>Create an Account</h1>
                 <p>Register with Blood Donate</p>
+
                 <form onSubmit={handleSubmit(handleRegistration)}>
-                    {/* <h1 className='text-center font-bold text-2xl'>Registration</h1> */}
                     <fieldset className="fieldset">
                         {/* Name */}
                         <label className="label">Name</label>
@@ -151,25 +160,52 @@ const Register = () => {
                         <input type="email"
                             {...register('email', { required: 'Email is required' })} className="input w-full" placeholder="Email" />
                         {errors.email && <p className="text-red-600">{errors.email.message}</p>}
-                        {/* password */}
-                        {/* <label className="label">Password</label>
-                        <input type="password" {...register('password', {
-                            required: true,
-                            minLength: 6,
-                            pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/
-                        })} className="input w-full" placeholder="Password" />
-                        {errors.password?.type === 'required' && <p className='text-red-600'>Password Is Required.</p>}
-                        {errors.password?.type === 'minLength' && <p className='text-red-600'>Password must be at least 6 characters.</p>}
-                        {errors.password?.type === 'pattern' && <p className='text-red-600'>Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.</p>} */}
-                        {/* role */}
-                        <label className="label">Role</label>
-                        <select defaultValue="Choose Role" className="select w-full" {...register('role', { required: 'Role is required' })}>
-                            <option>Choose A Role</option>
-                            <option>Volunteer</option>
-                            <option>Doner</option>
-                            
+                        
+                        {/* blood */}
+                        <label className="label">Blood Group</label>
+                        <select
+                            defaultValue=""
+                            className="select w-full"
+                            {...register('blood', { required: 'Blood Group is required' })}
+                        >
+                            <option value="" disabled>
+                                Choose Blood Group
+                            </option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A−</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B−</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB−</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O−</option>
                         </select>
-                        {errors.role && <p className="text-red-600">{errors.role.message}</p>}
+                        {errors.blood && <p className="text-red-600">{errors.blood.message}</p>}
+
+                        {/* District */}
+                        <label className="label">District</label>
+                        <select className="select w-full"
+                        {...register('district', { required: 'District required' })}
+                        >
+                            <option selected defaultValue=''>Select Your District</option>
+                            {
+                                districts.map(d=> <option value={d?.name} key={d.id}>{d?.name}</option>)
+                            }
+                        </select>
+                        {errors.district && <p className="text-red-600">{errors.district.message}</p>}
+
+                        {/* upazila */}
+                        <label className="label">Upazila</label>
+                        <select className="select w-full"
+                        {...register('upazila', { required: 'Upazila required' })}
+                        >
+                            <option selected defaultValue=''>Select Your Upazila</option>
+                            {
+                                upazilas.map(u=> <option value={u?.name} key={u.id}>{u?.name}</option>)
+                            }
+                        </select>
+                        {errors.upazila && <p className="text-red-600">{errors.upazila.message}</p>}
+
                         {/* Password */}
                         <label className="label">Password</label>
                         <div className="relative">
