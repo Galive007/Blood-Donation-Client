@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import useAuth from '../../../Hooks/useAuth';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import Swal from 'sweetalert2';
+import { useAxiosSecure } from '../../../Hooks/useAxiosSecure';
 
 const AddRequest = () => {
     const { user } = useAuth()
     // console.log(user);
+
+    const axiosSecure=useAxiosSecure()
 
     const [upazilas, setUpazilas] = useState([])
     const [districts, setDistricts] = useState([])
@@ -29,31 +32,46 @@ const AddRequest = () => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm();
 
 
     const onSubmit = async (data) => {
 
-        const { displayName,email, blood,hospital, district, upazila,message,recipientName,donationDate,donationTime } = data;
-        
-        const formData={
+        const { displayName, email, blood, hospital, district, upazila, message, recipientName, donationDate, donationTime } = data;
+
+        const formData = {
             displayName,
             email,
             blood,
-            hospital, 
-            district, 
+            hospital,
+            district,
             upazila,
             message,
             recipientName,
             donationDate,
             donationTime,
-            donation_status:'pending'
+            donation_status: 'pending'
         };
         console.log(formData);
-        
-        
 
+        // await axios.post('http://localhost:5000/requests', formData)
+        await axiosSecure.post('/requests',formData)
+            .then(res => {
+                // console.log(res.data.insertedId);
+                if (res.data.insertedId) {
+                    Swal.fire({
+                        title: "Congratulation!",
+                        text: "Request Successful",
+                        icon: "success"
+                    });
+                    reset();
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
     };
 
 
@@ -73,7 +91,7 @@ const AddRequest = () => {
                             <input
                                 type="text"
                                 readOnly
-                                {...register("displayName", { required: "Required" })}
+                                {...register("displayName")}
                                 value={user?.displayName}
                                 className="input input-bordered w-full"
                             />
@@ -86,7 +104,7 @@ const AddRequest = () => {
                             <input
                                 type="email"
                                 readOnly
-                                {...register("email", { required: "Required" })}
+                                {...register("email")}
                                 value={user?.email}
                                 className="input input-bordered w-full "
                             />
@@ -96,7 +114,7 @@ const AddRequest = () => {
                         <div>
                             <label className="label">Recipient Name</label>
                             <input
-                                {...register("recipientName", { required: "Required" })}
+                                {...register("recipientName")}
                                 className="input input-bordered w-full"
                             />
                             {errors.recipientName && <p className="text-red-500 text-sm">Required</p>}
@@ -146,7 +164,7 @@ const AddRequest = () => {
                                 {...register("upazila", { required: "Required" })}
                                 className="select select-bordered w-full"
                             >
-                                <option selected defaultValue=''>Select Your Upazila</option>
+                                <option value=''>Select Your Upazila</option>
                                 {
                                     upazilas.map(u => <option value={u?.name} key={u.id}>{u?.name}</option>)
                                 }

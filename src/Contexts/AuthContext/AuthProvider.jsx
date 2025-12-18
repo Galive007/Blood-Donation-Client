@@ -11,7 +11,9 @@ const googleProvider = new GoogleAuthProvider()
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [roleLoading, setRoleLoading] = useState(true)
     const [role, setRole] = useState('')
+    const [userStatus, setUserStatus] = useState('')
 
     const registerUser = (email, password) => {
         setLoading(true)
@@ -64,20 +66,23 @@ const AuthProvider = ({ children }) => {
             .then(res => {
                 // console.log(res.data.role);
                 setRole(res.data.role)
-                
+                setUserStatus(res.data.status)
+                setRoleLoading(false)
             })
             .catch(error => {
                 console.log(error);
             })
     }, [user])
 
-    // console.log(role);
+    // console.log(userStatus);
     
 
     const authInfo = {
         user,
         role,
         loading,
+        roleLoading,
+        userStatus,
         registerUser,
         signinUser,
         googleSignIn,

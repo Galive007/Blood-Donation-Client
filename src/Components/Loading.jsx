@@ -1,6 +1,7 @@
 import React from 'react';
-import MyContainer from './MyContainer';
 import { Circles } from 'react-loader-spinner';
+import MyContainer from './MyContainer';
+
 
 const Loading = () => {
     return (
@@ -9,7 +10,7 @@ const Loading = () => {
                 <Circles
                     height="80"
                     width="80"
-                    color="#a6412f"
+                    color="#a3141f"
                     ariaLabel="circles-loading"
                     wrapperStyle={{}}
                     wrapperClass=""
