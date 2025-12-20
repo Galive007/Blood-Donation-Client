@@ -6,7 +6,7 @@ A full‑stack **Blood Donation Management System** that connects donors, volunt
 
 ## 🔗 Live Demo
 
-* Frontend: [blooddonation25.netlify.app](https://your-frontend-url.com)
+* Frontend: [blooddonation25.netlify.app](blooddonation25.netlify.app)
 * Backend API: [ttps://blood-donation-one-pHIi.vercel.app/](https://your-backend-url.com)
 
 ---
