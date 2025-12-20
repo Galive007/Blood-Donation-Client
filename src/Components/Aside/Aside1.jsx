@@ -8,7 +8,8 @@ import useAuth from '../../Hooks/useAuth';
 const Aside1 = () => {
     const { logOut, role, roleLoading } = useAuth()
     const navigate = useNavigate()
-
+    console.log(role);
+    
     const logout = () => {
         // console.log('clicked');
         logOut()
@@ -19,12 +20,14 @@ const Aside1 = () => {
         return <div className="w-64 bg-slate-900 p-4 text-slate-400">Loading...</div>;
     }
     const menu = [
-        { name: "Home", icon: House, path: "/", roles: ["admin", "donor"] },
-        { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard", roles: ["admin", "donor"] },
+        { name: "Home", icon: House, path: "/", roles: ["admin", "donor","volunteer"] },
+        { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard", roles: ["admin", "donor","volunteer"] },
+        { name: "Profile", icon: Users, path: "/dashboard/profile", roles: ["admin", "donor","volunteer"] },
         { name: "Add Request", icon: GitPullRequestArrow, path: "/dashboard/add-request", roles: ["admin", "donor"] },
-        { name: "Manage Request", icon: SquareChartGantt, path: "/dashboard/manage-request", roles: ["admin"] },
-        { name: "My Request", icon: SquareChartGantt, path: "/dashboard/my-request", roles: ["donor"] },
+        { name: "Manage Request", icon: SquareChartGantt, path: "/dashboard/manage-request", roles: ["admin","volunteer"] },
+        { name: "My Request", icon: SquareChartGantt, path: "/dashboard/my-request", roles: ["donor","volunteer"] },
         { name: "All Users", icon: Users, path: "/dashboard/all-users", roles: ["admin"] },
+        
         { name: "Orders", icon: Package, path: "/admin/orders" },
         { name: "Delivery", icon: Truck, path: "/admin/delivery" },
         { name: "Reports", icon: BarChart3, path: "/admin/reports" },
@@ -43,7 +46,7 @@ const Aside1 = () => {
                 <nav className="flex-1 px-4 py-6 space-y-2">
                     {menu
                         .filter(item => item.roles?.includes(role))
-                        .map(({ name, icon: Icon, path }) => (
+                        .map(({ name, icon: Icon , path }) => (
                             
                                 <NavLink
                                     key={name}

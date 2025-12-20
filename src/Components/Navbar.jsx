@@ -13,7 +13,9 @@ const Navbar = () => {
 
     const links = <div className='text-secondary flex flex-col lg:flex-row lg:items-center lg:justify-center *:mr-3'>
         <MyLink to='/' className='text-lg'>Home</MyLink>
-        <MyLink to='allreviews' className='text-lg'>All Reviews</MyLink>
+        <MyLink to='allreviews' className='text-lg'>All Request</MyLink>
+        <MyLink to='search' className='text-lg'>Search</MyLink>
+        <MyLink to='donate' className='text-lg'>Donate</MyLink>
 
     </div>
     const logout = () => {
@@ -23,7 +25,7 @@ const Navbar = () => {
     return (
         <MyContainer>
 
-            <div className="navbar">
+            <div className="navbar my-3 bg-transparent">
                 <div className="navbar-start">
                     <div className="dropdown text-secondary">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -46,7 +48,7 @@ const Navbar = () => {
                                     <TypeAnimation
                                         sequence={[
                                             // Same substring at the start will only be typed once, initially
-                                            'Blood',
+                                            'Blo',
                                             100,
                                             'Blood Don',
                                             300,
@@ -57,6 +59,7 @@ const Navbar = () => {
                                         ]}
                                         speed={50}
                                         repeat={Infinity}
+                                        className='font-bold'
                                     />
                                 </div>
                                 <div className="text-xs text-primary gradient-text
@@ -94,17 +97,17 @@ const Navbar = () => {
                                     </button>
                                 </div>
                                 {open && (
-                                    <div className="absolute right-0 mt-2 w-48 rounded-md p-2 z-10 text-primary flex flex-col shadow-2xl">
+                                    <div className="absolute right-0 mt-2 w-48 rounded-md p-2 z-40 text-primary flex flex-col shadow-2xl">
                                         <h1 className='font-semibold text-white text-xl text-center'>{user?.displayName}</h1>
                                         {/* <Link to="/add-review" className="block px-3 py-2 text-sm text-secondary  hover:bg-primary rounded">Add Review</Link> */}
-                                        <MyLink to='/add-review' className='py-2 px-3'>
+                                        <MyLink to='/add-review' className='py-2 text-center px-3'>
                                             Add Review
                                         </MyLink>
                                         {/* <Link to="/my-reviews" className="block px-3 py-2 text-sm hover:bg-primary rounded">My Reviews</Link> */}
-                                        <MyLink to='/my-reviews' className='py-2 px-3'>
+                                        <MyLink to='/my-reviews' className='py-2 text-center px-3'>
                                             My Reviews
                                         </MyLink>
-                                        <MyLink to='/my-favorites' className='py-2 px-3'>
+                                        <MyLink to='/my-favorites' className='py-2 text-center px-3'>
                                             My Favorites
                                         </MyLink>
                                         <button onClick={() => { logout(); setOpen(false) }} className="w-full gradient-animate-btn rounded-2xl">Logout</button>

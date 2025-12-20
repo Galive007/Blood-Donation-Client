@@ -21,7 +21,7 @@ export const useAxiosSecure=()=>{
         const resInterceptor=axiosSecure.interceptors.response.use((response)=>{
             return response
         },(error)=>{
-            console.log(error);
+            // console.log(error);
             return Promise.reject(error)
         })
 

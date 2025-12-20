@@ -1,22 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import useAuth from '../../../Hooks/useAuth';
-import { useAxios } from '../../../Hooks/useAxios';
+import { useAxiosSecure } from '../../../Hooks/useAxiosSecure';
 
 const MyRequest = () => {
-    const axiosinstance=useAxios()
-    const {user}=useAuth()
-    const [myRequest,setMyRequest]=useState([])
 
-    useEffect(()=>{
-        axiosinstance.get(`/my-request?email=${user?.email}`)
-        .then(res=>{
-            // console.log(res.data);
-            setMyRequest(res.data)
-        })
-    },[axiosinstance, user?.email])
+    const axiosSecure = useAxiosSecure()
+    const [myRequest, setMyRequest] = useState([])
+    const [totalRequest, setTotalRequest] = useState(0)
+    const [itemsPerPage, setItemsPerPage] = useState(10)
+    const [currentPage, setCurrentPage] = useState(1)
 
-    console.log(myRequest);
+    useEffect(() => {
+        axiosSecure.get(`/my-request?page=${currentPage - 1}&size=${itemsPerPage}`)
+            .then(res => {
+                // console.log(res.data);
+                setMyRequest(res.data.request)
+                setTotalRequest(res.data.totalRequest)
+                
+            })
+    }, [axiosSecure, currentPage, itemsPerPage])
+
     
+    const numberOfPages = Math.ceil(totalRequest / itemsPerPage)
+    const pages = [...Array(numberOfPages).keys()].map(e => e + 1)
+
+    // console.log(myRequest, totalRequest, numberOfPages, pages);
+    const handlePrev=()=>{
+        if(currentPage>1){
+            setCurrentPage(currentPage-1)
+        }
+    }
+    const handleNext=()=>{
+        if(currentPage<pages.length){
+            setCurrentPage(currentPage+1)
+        }
+    }
 
     return (
         <div>
@@ -35,7 +52,7 @@ const MyRequest = () => {
                             <th>Blood Group</th>
                             <th>Donation Date</th>
                             <th>Hospital Name</th>
-                            
+
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -44,7 +61,7 @@ const MyRequest = () => {
                         {
                             myRequest?.map((request, index) => <tr key={index}>
                                 <th>
-                                    {index + 1}
+                                    {(currentPage - 1) * itemsPerPage + index + 1}
                                 </th>
                                 <td>
                                     <div>
@@ -79,6 +96,19 @@ const MyRequest = () => {
                     </tbody>
 
                 </table>
+            </div>
+            <div className='flex justify-center items-center gap-5 mt-5'>
+                <button onClick={handlePrev} className="btn">Prev</button>
+                {
+                    pages.map((page,index) =>
+                        <button key={index}
+                        className={`btn ${page===currentPage?'bg-[#435585] text-white':''}`}
+                        onClick={()=>setCurrentPage(page)}>
+                            {page}
+                        </button>
+                    )
+                }
+                <button onClick={handleNext} className="btn">Next</button>
             </div>
         </div>
     );

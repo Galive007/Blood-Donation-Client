@@ -10,6 +10,10 @@ import ManageRequest from "../Pages/Dashboard/ManageRequest/ManageRequest";
 import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
 import PrivateRoute from "./PrivateRoute";
 import MyRequest from "../Pages/Dashboard/MyRequest/MyRequest";
+import Profile from "../Pages/Dashboard/Profile/Profile";
+import Donate from "../Pages/Donate/Donate";
+import PaymentSuccess from "../Pages/PaymentSuccess/PaymentSuccess";
+import SearchRequest from "../Pages/SearchRequest/SearchRequest";
 
 
 
@@ -29,6 +33,18 @@ export const router = createBrowserRouter([
       {
         path: 'register',
         element: <Register></Register>
+      },
+      {
+        path: 'donate',
+        Component: Donate
+      },
+      {
+        path: 'payment-success',
+        Component: PaymentSuccess
+      },
+      {
+        path: 'search',
+        Component: SearchRequest
       }
     ]
   },
@@ -55,8 +71,12 @@ export const router = createBrowserRouter([
         element: <AllUsers></AllUsers>
       },
       {
-        path:'my-request',
-        element:<MyRequest></MyRequest>
+        path: 'my-request',
+        element: <MyRequest></MyRequest>
+      },
+      {
+        path: 'profile',
+        element: <Profile></Profile>
       }
     ]
   }

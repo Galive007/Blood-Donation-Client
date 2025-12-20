@@ -39,10 +39,11 @@ const AddRequest = () => {
 
     const onSubmit = async (data) => {
 
-        const { displayName, email, blood, hospital, district, upazila, message, recipientName, donationDate, donationTime } = data;
+        const { displayName, email, blood, hospital, district, upazila, message, recipientName, donationDate, donationTime,address } = data;
 
         const formData = {
             displayName,
+            address,
             email,
             blood,
             hospital,
@@ -57,7 +58,7 @@ const AddRequest = () => {
         console.log(formData);
 
         // await axios.post('http://localhost:5000/requests', formData)
-        await axiosSecure.post('/requests',formData)
+        await axiosSecure.post('/add-requests',formData)
             .then(res => {
                 // console.log(res.data.insertedId);
                 if (res.data.insertedId) {
