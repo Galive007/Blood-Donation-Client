@@ -94,7 +94,7 @@ const DonorDashboard = () => {
                         </tbody>
                     </table>
                     <div className="mt-4">
-                        <button onClick={() => navigate('/dashboard/my-donation-requests')} className="btn btn-outline">View All Requests</button>
+                        <button onClick={() => navigate('/dashboard/my-request')} className="btn btn-outline">View All Requests</button>
                     </div>
                 </div>
             )}
