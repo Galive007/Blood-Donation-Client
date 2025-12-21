@@ -15,6 +15,9 @@ import Donate from "../Pages/Donate/Donate";
 import PaymentSuccess from "../Pages/PaymentSuccess/PaymentSuccess";
 import SearchRequest from "../Pages/SearchRequest/SearchRequest";
 import Settings from "../Pages/Settings/Settings";
+import AllRequest from "../Pages/Home/AllRequest/AllRequest";
+import ViewDonationRequest from "../Pages/ViewDonationRequest/ViewDonationRequest";
+import EditRequest from "../Components/EditRequest/EditRequest";
 
 
 
@@ -46,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: 'search',
         Component: SearchRequest
+      },
+      {
+        path: 'all-request',
+        Component: AllRequest
       }
     ]
   },
@@ -80,9 +87,18 @@ export const router = createBrowserRouter([
         element: <Profile></Profile>
       },
       {
-        path:'settings',
-        element:<Settings></Settings>
+        path: 'settings',
+        element: <Settings></Settings>
+      },
+      {
+        path: 'view-request/:id',
+        element: <ViewDonationRequest />
+      },
+      {
+        path: 'edit-request/:id',
+        element: <EditRequest />
       }
+
     ]
   }
 ]); 
