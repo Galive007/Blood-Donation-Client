@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { House } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';
@@ -10,10 +10,24 @@ import MyLink from './MyLink';
 const Navbar = () => {
     const [open, setOpen] = useState(false)
     const { user, logOut } = useAuth()
+    const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
-    const links = <div className='text-secondary flex flex-col lg:flex-row lg:items-center lg:justify-center *:mr-3'>
+
+  useEffect(() => {
+    const html = document.querySelector("html");
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+
+  const handleTheme = (checked) => {
+    setTheme(checked ? "dark" : "light");
+  };
+
+
+    const links = <div className='flex flex-col lg:flex-row lg:items-center lg:justify-center *:mr-3'>
         <MyLink to='/' className='text-lg'>Home</MyLink>
-        <MyLink to='allreviews' className='text-lg'>All Request</MyLink>
+        <MyLink to='all-request' className='text-lg'>All Request</MyLink>
         <MyLink to='search' className='text-lg'>Search</MyLink>
         <MyLink to='donate' className='text-lg'>Donate</MyLink>
 
@@ -43,7 +57,7 @@ const Navbar = () => {
                             h-3/5 rounded-full' /> */}
                             <Logo></Logo>
                             <div className='hidden md:block'>
-                                <div className="text-sm md:text-xl lg:text-3xl gradient-text font-semibold">
+                                <div className="text-sm md:text-xl lg:text-3xl text-primary font-semibold">
 
                                     <TypeAnimation
                                         sequence={[
@@ -62,7 +76,7 @@ const Navbar = () => {
                                         className='font-bold'
                                     />
                                 </div>
-                                <div className="text-xs text-primary gradient-text
+                                <div className="text-xs gradient-text
                                 ">
                                     <h4>
                                         A Platform for Life-Saving Donations
@@ -79,6 +93,11 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
+                    <input
+                        onChange={(e) => handleTheme(e.target.checked)}
+                        type="checkbox"
+                        defaultChecked={localStorage.getItem('theme') === "dark"}
+                        className="toggle mr-3" />
                     <nav className="flex items-center gap-4">
                         {!user ? (
                             <div className="flex items-center gap-2">
@@ -88,29 +107,25 @@ const Navbar = () => {
                             </div>
                         ) : (
                             <div className="relative">
-                                
+
                                 <div className='flex items-center gap-2'>
                                     <Link to='/dashboard' className="btn">Dashboard</Link>
-                                    
+
                                     <button onClick={() => setOpen(o => !o)} className="w-10 h-10 rounded-full overflow-hidden border-2 border-secondary">
                                         <img src={user.photoURL || 'https://source.unsplash.com/120x120/?face'} alt="user" className="w-full h-full object-cover" />
                                     </button>
                                 </div>
                                 {open && (
-                                    <div className="absolute right-0 mt-2 w-48 rounded-md p-2 z-40 text-primary flex flex-col shadow-2xl">
-                                        <h1 className='font-semibold text-white text-xl text-center'>{user?.displayName}</h1>
-                                        {/* <Link to="/add-review" className="block px-3 py-2 text-sm text-secondary  hover:bg-primary rounded">Add Review</Link> */}
-                                        <MyLink to='/add-review' className='py-2 text-center px-3'>
-                                            Add Review
+                                    <div className="absolute right-0 mt-2 w-48 rounded-md p-2 z-40 flex flex-col shadow-2xl">
+                                        <h1 className='font-semibold  text-xl text-center'>{user?.displayName}</h1>
+                                        <MyLink to='/dashboard/profile' className=' text-center text-primary'>
+                                            Profile
                                         </MyLink>
-                                        {/* <Link to="/my-reviews" className="block px-3 py-2 text-sm hover:bg-primary rounded">My Reviews</Link> */}
-                                        <MyLink to='/my-reviews' className='py-2 text-center px-3'>
-                                            My Reviews
+                                        
+                                        <MyLink to='/dashboard/settings' className='text-center text-primary'>
+                                            Settings
                                         </MyLink>
-                                        <MyLink to='/my-favorites' className='py-2 text-center px-3'>
-                                            My Favorites
-                                        </MyLink>
-                                        <button onClick={() => { logout(); setOpen(false) }} className="w-full gradient-animate-btn rounded-2xl">Logout</button>
+                                        <button onClick={() => { logout(); setOpen(false) }} className="w-full gradient-animate-btn rounded-2xl text-primary">Logout</button>
                                     </div>
                                 )}
                             </div>

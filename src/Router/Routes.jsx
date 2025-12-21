@@ -14,6 +14,7 @@ import Profile from "../Pages/Dashboard/Profile/Profile";
 import Donate from "../Pages/Donate/Donate";
 import PaymentSuccess from "../Pages/PaymentSuccess/PaymentSuccess";
 import SearchRequest from "../Pages/SearchRequest/SearchRequest";
+import Settings from "../Pages/Settings/Settings";
 
 
 
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile></Profile>
+      },
+      {
+        path:'settings',
+        element:<Settings></Settings>
       }
     ]
   }

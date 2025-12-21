@@ -67,7 +67,7 @@ const Aside1 = () => {
                 {/* Footer */}
                 <div className="px-4 py-4 border-t border-slate-800">
                     <NavLink
-                        to="/admin/settings"
+                        to="/dashboard/settings"
                         className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800"
                     >
                         <Settings size={18} />

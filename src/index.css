@@ -2,15 +2,25 @@
 /* @plugin "daisyui"; */
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark;
-  themes: light --default;
+
 }
-@plugin "daisyui/theme" {
-  name: "dark";
-  default: true;
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root {
   --color-primary: red;
-  --color-secondary: white;
+  --secondary: white;
 }
 
+/* 🌙 Optional: override per theme */
+[data-theme="dark"] {
+  --color-primary: red;
+  --secondary: white;
+}
+
+[data-theme="light"] {
+  --color-primary: red;
+  --secondary: white;
+}
 
 .orb-container {
   position: relative;

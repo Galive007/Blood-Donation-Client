@@ -109,7 +109,7 @@ const Register = () => {
                                 const userData = {
                                     email, password, name, mainPhotoUrl, blood,district,upazila
                                 }
-                                axios.post('http://localhost:5000/users', userData)
+                                axios.post('https://blood-donation-one-phi.vercel.app/users', userData)
                                     .then(res => {
                                         // console.log(res.data);
                                         if (res.data.insertedId) {
