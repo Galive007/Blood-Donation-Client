@@ -5,13 +5,16 @@ import { useForm } from 'react-hook-form';
 import MyContainer from '../../Components/MyContainer';
 import { useAxios } from '../../Hooks/useAxios';
 import Loading from '../../Components/Loading';
+import BloodRequestCard from '../../Components/BloodRequestCard/BloodRequestCard';
+import useAuth from '../../Hooks/useAuth';
 
 const SearchRequest = () => {
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
     const [upazilas, setUpazilas] = useState([])
     const [districts, setDistricts] = useState([])
-    const [searchData,setSearchData]=useState([])
-    const axiosInstance=useAxios()
+    const [searchData, setSearchData] = useState([])
+    const axiosInstance = useAxios()
+    const {role}=useAuth()
 
     useEffect(() => {
         axios.get('/upazilas.json')
@@ -19,13 +22,13 @@ const SearchRequest = () => {
                 // console.log(res.data.name);
                 setUpazilas(res.data.upazilas)
             })
-            
+
         axios.get('/districts.json')
             .then(res => {
                 // console.log(res.data.name);
                 setDistricts(res.data.districts)
             })
-            
+
     }, [])
 
     const {
@@ -40,17 +43,17 @@ const SearchRequest = () => {
         // console.log(data);
 
         axiosInstance.get(`/search-requests?blood=${blood}&district=${district}&upazila=${upazila}`)
-        .then(res=>{
-            // console.log(res.data)
-            setSearchData(res.data)
-            
-        })
-        
+            .then(res => {
+                // console.log(res.data)
+                setSearchData(res.data)
+
+            })
+
     }
 
     console.log(searchData);
-    
-    
+
+
 
 
     return (
@@ -103,7 +106,7 @@ const SearchRequest = () => {
                             </div>
 
 
-                            
+
 
 
                             {/* Upazila */}
@@ -121,7 +124,7 @@ const SearchRequest = () => {
                             </div>
 
 
-                            
+
 
                             {/* Reset Button */}
                             {/* <button
@@ -132,7 +135,7 @@ const SearchRequest = () => {
                                 <ArrowPathIcon className="h-5 w-5 text-gray-600" />
                             </button> */}
                             {/* Submit */}
-                            <button 
+                            <button
                                 type="submit"
                                 className="h-12 bg-red-500 hover:bg-red-600 text-white rounded-md"
                             >
@@ -142,7 +145,17 @@ const SearchRequest = () => {
                     </div>
                 </form>
                 <div>
-                    jndjofnjdonf
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {
+                            searchData.map(req => (
+                                <BloodRequestCard
+                                    key={req._id}
+                                    request={req}
+                                    role={role}
+                                />
+                            ))
+                        }
+                    </div>
                 </div>
             </MyContainer>
         </div>

@@ -1,6 +1,7 @@
 
 
 import { Link } from "react-router";
+import { TypeAnimation } from "react-type-animation";
 
 
 const Banner = () => {
@@ -8,7 +9,23 @@ const Banner = () => {
     <section className="">
       <div className="max-w-7xl mx-auto px-6 py-24 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">
-          Donate Blood, Save Lives ❤️
+            
+          <TypeAnimation
+            sequence={[
+              // Same substring at the start will only be typed once, initially
+              'Donate',
+              100,
+              'Donate Blood,',
+              200,
+              'Donate Blood, Save',
+              300,
+              'Donate Blood, Save Lives ❤️',
+              400,
+            ]}
+            speed={50}
+            repeat={Infinity}
+            className='font-bold'
+          />
         </h1>
         <p className="text-lg md:text-xl max-w-2xl mx-auto mb-10">
           Join our community of lifesavers and help people in need by donating blood.

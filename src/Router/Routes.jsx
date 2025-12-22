@@ -18,6 +18,7 @@ import Settings from "../Pages/Settings/Settings";
 import AllRequest from "../Pages/Home/AllRequest/AllRequest";
 import ViewDonationRequest from "../Pages/ViewDonationRequest/ViewDonationRequest";
 import EditRequest from "../Components/EditRequest/EditRequest";
+import RequestDetails from "../Components/RequestDetails/RequestDetails";
 
 
 
@@ -53,6 +54,12 @@ export const router = createBrowserRouter([
       {
         path: 'all-request',
         Component: AllRequest
+      },
+      {
+        path:'/requests/:id',
+        element:<PrivateRoute>
+          <RequestDetails></RequestDetails>
+        </PrivateRoute>
       }
     ]
   },

@@ -57,24 +57,8 @@ const Navbar = () => {
                             h-3/5 rounded-full' /> */}
                             <Logo></Logo>
                             <div className='hidden md:block'>
-                                <div className="text-sm md:text-xl lg:text-3xl text-primary font-semibold">
-
-                                    <TypeAnimation
-                                        sequence={[
-                                            // Same substring at the start will only be typed once, initially
-                                            'Blo',
-                                            100,
-                                            'Blood Don',
-                                            300,
-                                            'Blood Donat',
-                                            400,
-                                            'Blood Donation',
-                                            500,
-                                        ]}
-                                        speed={50}
-                                        repeat={Infinity}
-                                        className='font-bold'
-                                    />
+                                <div className="text-sm md:text-xl lg:text-3xl text-primary font-bold">
+                                    <h1>Blood Care</h1>
                                 </div>
                                 <div className="text-xs gradient-text
                                 ">
