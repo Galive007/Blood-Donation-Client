@@ -60,7 +60,7 @@ const Donate = () => {
                 type="number"
                 name="donateAmount"
                 placeholder="Donate For Helpless People"
-                className="input w-[450px]"
+                className="input w-auto md:w-[450px]"
                 required
               />
               <button className="btn btn-primary" type="submit">
