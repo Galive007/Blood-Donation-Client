@@ -1,8 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useAxios } from '../../Hooks/useAxios';
 
 const ContactUs = () => {
+  const axiosinstance=useAxios()
 
   const {
     register,
@@ -12,10 +14,12 @@ const ContactUs = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    console.log(data);
+    
     try {
       // 🔹 send data to backend
-      await axios.post('/contact', data);
-
+      await axiosinstance.post('/contact', data);
+      
       alert('Message sent successfully!');
       reset();
     } catch (error) {
@@ -103,7 +107,7 @@ const ContactUs = () => {
           {/* Submit */}
           <button
             type="submit"
-            className="btn btn-error w-full"
+            className="btn bg-red-600 w-full"
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Sending...' : 'Send Message'}

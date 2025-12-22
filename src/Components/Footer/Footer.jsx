@@ -11,7 +11,7 @@ const Footer = () => {
                 <div>
                     <div className='flex items-center gap-3 mb-3'>
                         <Logo></Logo>
-                        <h3 className="text-2xl font-bold mb-3">Blood Donation</h3>
+                        <h3 className="text-2xl font-bold mb-3">Blood Care</h3>
                     </div>
                     <p className="text-sm">
                         A platform connecting blood donors with people in need.
