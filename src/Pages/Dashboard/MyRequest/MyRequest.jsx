@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useAxiosSecure } from '../../../Hooks/useAxiosSecure';
 import { useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
+import Loading from '../../../Components/Loading';
 
 const MyRequest = () => {
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
 
+    const [loading, setLoading] = useState(true);
     const [myRequest, setMyRequest] = useState([]);
     const [totalRequest, setTotalRequest] = useState(0);
     const itemsPerPage = 10;
@@ -19,6 +21,7 @@ const MyRequest = () => {
             );
             setMyRequest(res.data.request);
             setTotalRequest(res.data.totalRequest);
+            setLoading(false);
         } catch (error) {
             Swal.fire('Error', 'Failed to load requests', error);
         }
@@ -61,6 +64,8 @@ const MyRequest = () => {
                 return 'badge';
         }
     };
+
+    if (loading) return <Loading></Loading>;
 
     return (
         <div className="p-4">

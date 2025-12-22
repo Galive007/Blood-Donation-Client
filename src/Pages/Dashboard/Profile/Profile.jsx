@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAxiosSecure } from '../../../Hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import Loading from '../../../Components/Loading';
 
 const Profile = () => {
   const axiosSecure = useAxiosSecure();
   const [editable, setEditable] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   const { register, handleSubmit, reset } = useForm();
 
   useEffect(() => {
@@ -14,7 +15,7 @@ const Profile = () => {
       .then(res => {
         reset(res.data);
       })
-      .catch(err => console.log(err));
+      .finally(() => setLoading(false));
   }, [axiosSecure, reset]);
 
   const onSubmit = (data) => {
@@ -23,8 +24,10 @@ const Profile = () => {
         Swal.fire('Success', 'Profile updated successfully', 'success');
         setEditable(false);
       })
-      .catch(err => console.log(err));
+      .finally(() => setLoading(false));
   };
+
+  if (loading) return <Loading></Loading>;
 
   return (
     <div className="max-w-3xl mx-auto p-6">

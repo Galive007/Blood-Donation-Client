@@ -3,6 +3,7 @@ import { useAxiosSecure } from '../../../Hooks/useAxiosSecure';
 import useAuth from '../../../Hooks/useAuth';
 import { useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
+import Loading from '../../../Components/Loading';
 
 const DonorDashboard = () => {
     const { user } = useAuth();
@@ -51,7 +52,7 @@ const DonorDashboard = () => {
         });
     };
 
-    if (loading) return <p className="p-6">Loading...</p>;
+    if (loading) return <Loading></Loading>;
 
     return (
         <div className="p-6">

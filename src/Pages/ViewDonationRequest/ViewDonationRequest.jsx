@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useAxiosSecure } from '../../Hooks/useAxiosSecure';
+import Loading from '../../Components/Loading';
 
 
 const ViewDonationRequest = () => {
@@ -16,7 +17,7 @@ const ViewDonationRequest = () => {
     console.log(request);
     
     if (!request) {
-        return <p className="p-6">Loading...</p>;
+        return <Loading></Loading>;
     }
 
     return (

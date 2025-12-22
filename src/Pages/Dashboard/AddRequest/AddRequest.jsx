@@ -1,244 +1,104 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import useAuth from '../../../Hooks/useAuth';
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useAxiosSecure } from '../../../Hooks/useAxiosSecure';
+import Loading from '../../../Components/Loading';
 
 const AddRequest = () => {
-    const { user } = useAuth()
-    // console.log(user);
+    const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
 
-    const axiosSecure=useAxiosSecure()
+    const [dbUser, setDbUser] = useState(null);
+    const [loadingUser, setLoadingUser] = useState(true);
 
-    const [upazilas, setUpazilas] = useState([])
-    const [districts, setDistricts] = useState([])
-
+    const [upazilas, setUpazilas] = useState([]);
+    const [districts, setDistricts] = useState([]);
 
     useEffect(() => {
-        axios.get('/upazilas.json')
-            .then(res => {
-                // console.log(res.data.name);
-                setUpazilas(res.data.upazilas)
-            })
+        axios.get('/upazilas.json').then(res => setUpazilas(res.data.upazilas));
+        axios.get('/districts.json').then(res => setDistricts(res.data.districts));
+    }, []);
 
-        axios.get('/districts.json')
-            .then(res => {
-                // console.log(res.data.name);
-                setDistricts(res.data.districts)
-            })
-    }, [])
+    useEffect(() => {
+        if (user?.email) {
+            axiosSecure.get('/users/me')
+                .then(res => setDbUser(res.data))
+                .finally(() => setLoadingUser(false));
+        }
+    }, [user, axiosSecure]);
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm();
-
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const onSubmit = async (data) => {
-
-        const { displayName, email, blood, hospital, district, upazila, message, recipientName, donationDate, donationTime,address } = data;
-
-        const formData = {
-            displayName,
-            address,
-            email,
-            blood,
-            hospital,
-            district,
-            upazila,
-            message,
-            recipientName,
-            donationDate,
-            donationTime,
-            donation_status: 'pending'
-        };
-        console.log(formData);
-
-        
-        await axiosSecure.post('/add-requests',formData)
+        await axiosSecure.post('/add-requests', data)
             .then(res => {
-                // console.log(res.data.insertedId);
                 if (res.data.insertedId) {
-                    Swal.fire({
-                        title: "Congratulation!",
-                        text: "Request Successful",
-                        icon: "success"
-                    });
+                    Swal.fire("Success", "Request Successful", "success");
                     reset();
                 }
             })
             .catch(err => {
-                console.log(err);
-            })
+                if (err.response?.status === 403) {
+                    Swal.fire("Blocked", "You are blocked by admin", "error");
+                } else {
+                    Swal.fire("Error", "Something went wrong", "error");
+                }
+            });
     };
 
+    if (loadingUser) {
+        return <Loading></Loading>;
+    }
 
     return (
-        <div>
-            <div className="flex items-center justify-center p-4">
-                <div className="w-full max-w-3xl rounded-xl p-6">
-                    <h2 className="text-2xl font-bold mb-6 text-center">
-                        Blood Donation Request
-                    </h2>
+        <div className="max-w-3xl mx-auto p-6">
+            <h2 className="text-2xl font-bold text-center mb-6">Blood Donation Request</h2>
 
+            {dbUser?.status === 'blocked' && (
+                <p className="text-red-600 text-center mb-4">
+                    You are blocked by admin and cannot create donation requests.
+                </p>
+            )}
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* Requester Name */}
-                        <div>
-                            <label className="label">Requester Name</label>
-                            <input
-                                type="text"
-                                readOnly
-                                {...register("displayName")}
-                                value={user?.displayName}
-                                className="input input-bordered w-full"
-                            />
-                        </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input readOnly {...register("displayName")} value={user?.displayName} className="input w-full input-bordered" />
+                <input readOnly {...register("email")} value={user?.email} className="input w-full input-bordered" />
 
+                <input {...register("recipientName", { required: true })} placeholder="Recipient Name" className="input w-full input-bordered" />
+                <select {...register("blood", { required: true })} className="select w-full select-bordered">
+                    <option value="">Select Blood</option>
+                    <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+                </select>
 
-                        {/* Requester Email */}
-                        <div>
-                            <label className="label">Requester Email</label>
-                            <input
-                                type="email"
-                                readOnly
-                                {...register("email")}
-                                value={user?.email}
-                                className="input input-bordered w-full "
-                            />
-                        </div>
+                <select {...register("district", { required: true })} className="select w-full select-bordered">
+                    <option value="">Select District</option>
+                    {districts.map(d => <option key={d.id}>{d.name}</option>)}
+                </select>
 
-                        {/* Recipient Name */}
-                        <div>
-                            <label className="label">Recipient Name</label>
-                            <input
-                                {...register("recipientName")}
-                                className="input input-bordered w-full"
-                            />
-                            {errors.recipientName && <p className="text-red-500 text-sm">Required</p>}
-                        </div>
+                <select {...register("upazila", { required: true })} className="select w-full select-bordered">
+                    <option value="">Select Upazila</option>
+                    {upazilas.map(u => <option key={u.id}>{u.name}</option>)}
+                </select>
 
+                <input {...register("hospital", { required: true })} placeholder="Hospital" className="input input-bordered w-full md:col-span-2" />
+                <input {...register("address", { required: true })} placeholder="Full Address" className="input input-bordered w-full md:col-span-2" />
 
-                        {/* Blood Group */}
-                        <div>
-                            <label className="label">Blood Group</label>
-                            <select
-                                {...register("blood", { required: "Required" })}
-                                className="select select-bordered w-full"
-                            >
-                                <option value="">Select Blood Group</option>
-                                <option>A+</option>
-                                <option>A-</option>
-                                <option>B+</option>
-                                <option>B-</option>
-                                <option>AB+</option>
-                                <option>AB-</option>
-                                <option>O+</option>
-                                <option>O-</option>
-                            </select>
-                        </div>
-                        {/* District */}
-                        <div>
-                            <label className="label">District</label>
-                            <select
-                                {...register("district", { required: "Required" })}
-                                className="select select-bordered w-full"
-                            >
-                                <option value="">Select District</option>
-                                {
-                                    districts.map(d => <option value={d?.name} key={d.id}>{d?.name}</option>)
-                                }
-                            </select>
-                        </div>
+                <input type="date" {...register("donationDate", { required: true })} className="input w-full input-bordered" />
+                <input type="time" {...register("donationTime", { required: true })} className="input w-full input-bordered" />
 
+                <textarea {...register("message", { required: true })} className="textarea textarea-bordered
+                w-full md:col-span-2" />
 
-                        {errors.district && <p className="text-red-600">{errors.district.message}</p>}
-
-
-                        {/* Upazila */}
-                        <div>
-                            <label className="label">Upazila</label>
-                            <select
-                                {...register("upazila", { required: "Required" })}
-                                className="select select-bordered w-full"
-                            >
-                                <option value=''>Select Your Upazila</option>
-                                {
-                                    upazilas.map(u => <option value={u?.name} key={u.id}>{u?.name}</option>)
-                                }
-                            </select>
-                        </div>
-
-
-                        {errors.upazila && <p className="text-red-600">{errors.upazila.message}</p>}
-
-
-                        {/* Hospital Name */}
-                        <div className="md:col-span-2">
-                            <label className="label">Hospital Name</label>
-                            <input
-                                {...register("hospital", { required: "Required" })}
-                                placeholder="Dhaka Medical College Hospital"
-                                className="input input-bordered w-full"
-                            />
-                        </div>
-
-
-                        {/* Address */}
-                        <div className="md:col-span-2">
-                            <label className="label">Full Address</label>
-                            <input
-                                {...register("address", { required: "Required" })}
-                                placeholder="Zahir Raihan Rd, Dhaka"
-                                className="input input-bordered w-full"
-                            />
-                        </div>
-
-
-                        {/* Donation Date */}
-                        <div>
-                            <label className="label">Donation Date</label>
-                            <input
-                                type="date"
-                                {...register("donationDate", { required: "Required" })}
-                                className="input input-bordered w-full"
-                            />
-                        </div>
-                        {/* Donation Time */}
-                        <div>
-                            <label className="label">Donation Time</label>
-                            <input
-                                type="time"
-                                {...register("donationTime", { required: "Required" })}
-                                className="input input-bordered w-full"
-                            />
-                        </div>
-
-
-                        {/* Request Message */}
-                        <div className="md:col-span-2">
-                            <label className="label">Request Message</label>
-                            <textarea
-                                {...register("message", { required: "Required" })}
-                                rows="4"
-                                placeholder="Explain why blood is needed"
-                                className="textarea textarea-bordered w-full"
-                            ></textarea>
-                        </div>
-
-
-                        {/* Submit Button */}
-                        <div className="md:col-span-2">
-                            <button className="btn btn-primary w-full mt-4">
-                                Request Blood
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                <button
+                    disabled={dbUser?.status === 'blocked'}
+                    className="btn btn-primary md:col-span-2"
+                >
+                    Request Blood
+                </button>
+            </form>
         </div>
     );
 };

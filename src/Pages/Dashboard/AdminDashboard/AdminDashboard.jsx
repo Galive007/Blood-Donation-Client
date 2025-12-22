@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Users, Droplet, DollarSign } from "lucide-react";
 import { useAxiosSecure } from '../../../Hooks/useAxiosSecure';
+import Loading from '../../../Components/Loading';
 
 
 const AdminDashboard = () => {
@@ -8,7 +9,7 @@ const AdminDashboard = () => {
     const [requests, setAllRequest] = useState([])
     const axiosSecure = useAxiosSecure()
     const [totalFunds,setTotalFunds]=useState([])
-
+    const [loading, setLoading] = useState(true);
 
 
 
@@ -41,6 +42,7 @@ const AdminDashboard = () => {
                 setAllRequest(res.data.totalBloodRequests);
 
             })
+            .finally(() => setLoading(false));
     }, [axiosSecure])
     useEffect(() => {
         axiosSecure.get('/admin/total-funds')
@@ -48,9 +50,10 @@ const AdminDashboard = () => {
                 // console.log(res.data.totalFunds);
                 setTotalFunds(res.data.totalFunds)
             })
+            .finally(() => setLoading(false));
     }, [axiosSecure])
 
-    console.log(totalFunds);
+    if (loading) return <Loading></Loading>;
     return (
         <div>
             <div className='flex-row justify-center items-center'>

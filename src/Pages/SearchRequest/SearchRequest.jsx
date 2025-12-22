@@ -4,9 +4,10 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import MyContainer from '../../Components/MyContainer';
 import { useAxios } from '../../Hooks/useAxios';
+import Loading from '../../Components/Loading';
 
 const SearchRequest = () => {
-    
+    const [loading, setLoading] = useState(true);
     const [upazilas, setUpazilas] = useState([])
     const [districts, setDistricts] = useState([])
     const [searchData,setSearchData]=useState([])
@@ -18,12 +19,13 @@ const SearchRequest = () => {
                 // console.log(res.data.name);
                 setUpazilas(res.data.upazilas)
             })
-
+            
         axios.get('/districts.json')
             .then(res => {
                 // console.log(res.data.name);
                 setDistricts(res.data.districts)
             })
+            
     }, [])
 
     const {
@@ -39,14 +41,16 @@ const SearchRequest = () => {
 
         axiosInstance.get(`/search-requests?blood=${blood}&district=${district}&upazila=${upazila}`)
         .then(res=>{
-            console.log(res.data)
+            // console.log(res.data)
             setSearchData(res.data)
+            
         })
+        
     }
 
     console.log(searchData);
     
-
+    
 
 
     return (
