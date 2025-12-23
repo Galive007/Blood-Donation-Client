@@ -19,12 +19,14 @@ import AllRequest from "../Pages/Home/AllRequest/AllRequest";
 import ViewDonationRequest from "../Pages/ViewDonationRequest/ViewDonationRequest";
 import EditRequest from "../Components/EditRequest/EditRequest";
 import RequestDetails from "../Components/RequestDetails/RequestDetails";
+import ErrorPage from "../Components/ErrorPages/ErrorPage";
 
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
+    errorElement:<ErrorPage></ErrorPage>,
     element: <RootLayout></RootLayout>,
     children: [
       {
@@ -65,6 +67,7 @@ export const router = createBrowserRouter([
   },
   {
     path: 'dashboard',
+    errorElement:<ErrorPage></ErrorPage>,
     element: <PrivateRoute>
       <DashboardLayout></DashboardLayout>
     </PrivateRoute>,

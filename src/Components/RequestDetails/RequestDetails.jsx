@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { useAxiosSecure } from '../../Hooks/useAxiosSecure';
 import Loading from '../Loading';
 import MyContainer from '../MyContainer';
@@ -81,9 +81,9 @@ const RequestDetails = () => {
 
             {/* Actions */}
             <div className="flex flex-wrap gap-3 pt-4 border-t">
-              <button className="btn btn-outline btn-sm">
+              <Link to={'/all-requests'} className="btn btn-outline btn-sm">
                 Back
-              </button>
+              </Link>
 
               {request.donation_status === 'pending' && (
                 <button className="btn btn-success btn-sm">

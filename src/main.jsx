@@ -5,6 +5,14 @@ import App from './App.jsx'
 import { RouterProvider } from 'react-router'
 import { router } from './Router/Routes.jsx'
 import AuthProvider from './Contexts/AuthContext/AuthProvider.jsx'
+import 'aos/dist/aos.css';
+import AOS from 'aos';
+
+AOS.init({
+  duration: 1000,
+  once: true,
+});
+
 
 createRoot(document.getElementById('root')).render(
   <>
