@@ -1,9 +1,12 @@
 import { MapPin, Calendar, Clock, Hospital } from "lucide-react";
 import { useNavigate } from "react-router";
-import axios from "axios";
+import Swal from "sweetalert2";
+import { useAxiosSecure } from "../../Hooks/useAxiosSecure";
 
 const BloodRequestCard = ({ request, role }) => {
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
+
   const {
     _id,
     blood,
@@ -20,57 +23,57 @@ const BloodRequestCard = ({ request, role }) => {
     pending: "badge-warning",
     inprogress: "badge-info",
     done: "badge-success",
+    canceled: "badge-error",
   };
 
-  // Handle "Donate" action
   const handleDonate = async () => {
     try {
-      const token = localStorage.getItem("token");
-      await axios.patch(
-        `/requests/${_id}/accept`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      alert("You accepted this donation request!");
-      navigate(`/requests/${_id}`); // navigate to details page after accept
-    } catch (err) {
-      console.error(err.response?.data || err);
-      alert(err.response?.data?.message || "Failed to accept request");
+      await axiosSecure.patch(`/requests/${_id}/accept`);
+
+      Swal.fire({
+        icon: "success",
+        title: "Accepted!",
+        text: "You have accepted this donation request.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+      navigate(`/requests/${_id}`);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: error.response?.data?.message || "Something went wrong",
+      });
     }
   };
 
   return (
-    <div className="card bg-base-100 shadow-md border border-base-300 hover:shadow-xl transition">
+    <div className="card bg-base-100 shadow-md border hover:shadow-xl transition">
       <div className="card-body">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex justify-between items-center">
           <span className="text-3xl font-bold text-red-600">{blood}</span>
           <span className={`badge ${statusColor[donation_status]}`}>
             {donation_status}
           </span>
         </div>
 
-        {/* Recipient */}
         <h2 className="text-lg font-semibold mt-2">
           Recipient: {recipientName}
         </h2>
 
-        {/* Hospital */}
         <div className="flex items-center gap-2 text-sm text-gray-600 mt-2">
           <Hospital size={16} />
-          <span>{hospital}</span>
+          {hospital}
         </div>
 
-        {/* Location */}
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <MapPin size={16} />
-          <span>
-            {upazila}, {district}
-          </span>
+          {upazila}, {district}
         </div>
 
-        {/* Date & Time */}
-        <div className="flex items-center gap-4 text-sm text-gray-600 mt-2">
+        <div className="flex gap-4 text-sm text-gray-600 mt-2">
           <div className="flex items-center gap-1">
             <Calendar size={16} />
             {donationDate}
@@ -81,7 +84,6 @@ const BloodRequestCard = ({ request, role }) => {
           </div>
         </div>
 
-        {/* Actions */}
         <div className="card-actions justify-end mt-4">
           <button
             className="btn btn-outline btn-sm"

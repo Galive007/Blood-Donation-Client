@@ -34,7 +34,7 @@ const Donate = () => {
     <div className="relative min-h-screen w-full overflow-hidden">
 
       {/* 🔹 Background Layer */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="absolute inset-0 z-0 min-h-screen pointer-events-none">
         <LightRays
           raysOrigin="top-center"
           raysColor="#00ffff"
