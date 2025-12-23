@@ -47,7 +47,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         axiosSecure.get('/admin/total-funds')
             .then(res => {
-                // console.log(res.data.totalFunds);
+                //console.log(res.data.totalFunds);
                 setTotalFunds(res.data.totalFunds)
             })
             .finally(() => setLoading(false));

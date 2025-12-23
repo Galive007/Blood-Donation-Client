@@ -6,7 +6,7 @@ const ManageRequest = () => {
     const [requests, setRequests] = useState([])
     const axiosinstance = useAxios()
     const { user } = useAuth()
-    // console.log(user);
+    //console.log(user);
 
 
     useEffect(() => {
@@ -15,12 +15,12 @@ const ManageRequest = () => {
                 setRequests(res.data)
             })
             .catch(err => {
-                console.log(err);
+                //console.log(err);
 
             })
     }, [axiosinstance, user?.email])
 
-    // console.log(requests);
+    //console.log(requests);
 
 
 

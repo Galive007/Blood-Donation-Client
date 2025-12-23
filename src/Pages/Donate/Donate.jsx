@@ -22,11 +22,11 @@ const Donate = () => {
     const formData = {
       donarEmail, donateAmount, donarName
     }
-    console.log(formData);
+    //console.log(formData);
 
     axiosInstance.post('/create-payment-checkout', formData)
       .then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         window.location.href = res.data.url
       })
   }

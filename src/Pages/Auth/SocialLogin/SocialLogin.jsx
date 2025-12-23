@@ -13,11 +13,11 @@ const SocialLogin = () => {
     const handleGoogleSignIn = () => {
         googleSignIn()
             .then(() => {
-                // console.log(result.user);
+                //console.log(result.user);
                 navigate(location.state || '/')
             })
             .catch(error => {
-                console.log(error);
+                //console.log(error);
 
             })
     }

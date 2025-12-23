@@ -28,8 +28,8 @@ const RequestDetails = () => {
         navigate('/login')
       })
   }, [axiosSecure, id, navigate])
-  console.log(request);
-  console.log(id);
+  //console.log(request);
+  //console.log(id);
 
   if (loading) {
     return <Loading></Loading>

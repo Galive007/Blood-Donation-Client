@@ -15,13 +15,13 @@ const AllRequest = () => {
     useEffect(() => {
         axiosInstance.get('/all-requests')
             .then(res => {
-                // console.log(res.data);
+                //console.log(res.data);
                 setAllRequest(res.data)
                 setLoading(false)
             })
             
     }, [axiosInstance])
-    console.log(allRequest);
+    //console.log(allRequest);
     if (loading) return <Loading></Loading>;
 
     return (

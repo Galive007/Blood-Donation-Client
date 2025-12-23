@@ -18,20 +18,20 @@ const Register = () => {
     useEffect(()=>{
         axios.get('/upazilas.json')
         .then(res=>{
-            // console.log(res.data.name);
+            //console.log(res.data.name);
             setUpazilas(res.data.upazilas)
         })
 
         axios.get('/districts.json')
         .then(res=>{
-            // console.log(res.data.name);
+            //console.log(res.data.name);
             setDistricts(res.data.districts)
         })
     },[])
 
 
 
-    // console.log(upazilas,districts);
+    //console.log(upazilas,districts);
     
 
 
@@ -70,15 +70,15 @@ const Register = () => {
             return;
         }
         const { confirmPassword, ...restData } = data;
-        console.log(confirmPassword);
+        //console.log(confirmPassword);
 
         const profileImage = restData.photo[0];
         const { email, password, name, blood,district,upazila } = restData;
         
-        // console.log(district);
+        //console.log(district);
         await registerUser(email, password)
             .then(() => {
-                // console.log(result.user);
+                //console.log(result.user);
                 //1. store the image in form data
                 const imageFormData = new FormData()
                 imageFormData.append('image', profileImage)
@@ -93,11 +93,11 @@ const Register = () => {
                     })
 
                     .then(res => {
-                        // console.log('after image upload', res.data.data.url);
+                        //console.log('after image upload', res.data.data.url);
 
                         const mainPhotoUrl = res.data.data.url
 
-                        // console.log(formData);
+                        //console.log(formData);
                         // update user profile to firebase
                         const userProfile = {
                             displayName: name,
@@ -111,7 +111,7 @@ const Register = () => {
                                 }
                                 axios.post('https://blood-donation-one-phi.vercel.app/users', userData)
                                     .then(res => {
-                                        // console.log(res.data);
+                                        //console.log(res.data);
                                         if (res.data.insertedId) {
                                             Swal.fire({
                                                 title: "Good job!",
@@ -122,7 +122,7 @@ const Register = () => {
                                         }
                                     })
                                     
-                                // console.log('user profile updated done',res); 
+                                //console.log('user profile updated done',res); 
 
                             })
 
@@ -130,7 +130,7 @@ const Register = () => {
 
             })
             .catch(error => {
-                console.log(error);
+                //console.log(error);
             })
     }
 

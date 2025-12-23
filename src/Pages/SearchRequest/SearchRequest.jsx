@@ -19,13 +19,13 @@ const SearchRequest = () => {
     useEffect(() => {
         axios.get('/upazilas.json')
             .then(res => {
-                // console.log(res.data.name);
+                //console.log(res.data.name);
                 setUpazilas(res.data.upazilas)
             })
 
         axios.get('/districts.json')
             .then(res => {
-                // console.log(res.data.name);
+                //console.log(res.data.name);
                 setDistricts(res.data.districts)
             })
 
@@ -40,18 +40,18 @@ const SearchRequest = () => {
     // reset,
     const onSubmit = async (data) => {
         const { blood, district, upazila } = data;
-        // console.log(data);
+        //console.log(data);
 
         axiosInstance.get(`/search-requests?blood=${blood}&district=${district}&upazila=${upazila}`)
             .then(res => {
-                // console.log(res.data)
+                //console.log(res.data)
                 setSearchData(res.data)
 
             })
 
     }
 
-    console.log(searchData);
+    //console.log(searchData);
 
 
 

@@ -20,11 +20,11 @@ const Login = () => {
                 navigate(location?.state || '/')
             })
             .catch(error => {
-                console.log(error);
+                //console.log(error);
             })
     }
     const handleForget = () => {
-        // console.log('clicked');
+        //console.log('clicked');
         const email = getValues('email')
 
         if (!email) {
@@ -34,7 +34,9 @@ const Login = () => {
             .then(() => {
                 alert("Password reset link sent to your email");
             })
-            .catch(err => console.log(err));
+            .catch(err=>{
+                alert('Something Error',err)
+            })
     }
 
     return (

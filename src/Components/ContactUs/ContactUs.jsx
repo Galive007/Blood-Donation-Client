@@ -15,7 +15,7 @@ const ContactUs = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    //console.log(data);
 
     try {
       // 🔹 send data to backend

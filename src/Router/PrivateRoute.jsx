@@ -6,10 +6,10 @@ import Loading from '../Components/Loading';
 
 const PrivateRoute = ({ children }) => {
     const location = useLocation()
-    // console.log(location);
+    //console.log(location);
 
     const { user, loading, roleLoading, userStatus } = useAuth()
-    // console.log(userStatus);
+    //console.log(userStatus);
     
     if (loading || roleLoading) {
         return <Loading></Loading>

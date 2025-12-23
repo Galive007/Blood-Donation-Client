@@ -64,17 +64,17 @@ const AuthProvider = ({ children }) => {
         if(!user) return;
         axios.get(`https://blood-donation-one-phi.vercel.app/users/role/${user?.email}`)
             .then(res => {
-                console.log(res.data.role);
+                //console.log(res.data.role);
                 setRole(res.data.role)
                 setUserStatus(res.data.status)
                 setRoleLoading(false)
             })
             .catch(error => {
-                console.log(error);
+                //console.log(error);
             })
     }, [user])
 
-    // console.log(userStatus);
+    //console.log(userStatus);
     
 
     const authInfo = {

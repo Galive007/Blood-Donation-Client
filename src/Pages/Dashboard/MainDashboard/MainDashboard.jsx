@@ -5,7 +5,7 @@ import DonorDashboard from '../DonorDashboard/DonorDashboard';
 
 const MainDashboard = () => {
     const { role } = useAuth()
-    // console.log(role);
+    //console.log(role);
 
     return (
         <div>

@@ -26,11 +26,11 @@ const AllUsers = () => {
   useEffect(() => {
     fetchUser()
   }, [axiosSecure])
-  // console.log(users.length);
+  //console.log(users.length);
   // const handleStatusChange = (email, status) => {
   //   axiosSecure.patch(`/update/user/status?email=${email}&status=${status}`)
   //     .then(res => {
-  //       console.log(res.data);
+  //       //console.log(res.data);
   //       fetchUser()
   //     })
   //     .finally(() => setLoading(false));

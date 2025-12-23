@@ -8,10 +8,10 @@ import useAuth from '../../Hooks/useAuth';
 const Aside1 = () => {
     const { logOut, role, roleLoading } = useAuth()
     const navigate = useNavigate()
-    console.log(role);
+    //console.log(role);
     
     const logout = () => {
-        // console.log('clicked');
+        //console.log('clicked');
         logOut()
         navigate('/')
 
