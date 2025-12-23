@@ -19,9 +19,7 @@ const Login = () => {
 
                 navigate(location?.state || '/')
             })
-            .catch(error => {
-                //console.log(error);
-            })
+            
     }
     const handleForget = () => {
         //console.log('clicked');
